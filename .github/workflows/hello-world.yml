@@ -1,0 +1,9 @@
+name: hello-world # descriptive 하게 적어서 가독성 뿐만 아니라, 다른 사람이 이 컴포넌트가 무슨 일을 하는건지 쉽게 이해할 수 있게 한다.
+on: push # workflows 의 tirgger event 설정, https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows / repository-dispatch로 외부에서 이벤트 호출 가능, https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
+jobs: # 모든 workflow는 하나 이상의 job을 갖는다. 기본적으로 병렬 실행되지만, 다른 job이 끝날 때까지 기다리게 할 수도 있다.
+  hello-world-job:
+    runs-on: ubuntu-latest # runner는 workflow에 있는 jobs를 실행할 machine이다. / GitHub-hosted runner와 Self-hosted runner로 나눌 수 있다. / GitHub-hosted runner가 편하긴 하지만 Self-hosted runner가 필요할 때도 있다. 나중에 다룰 예정./ Self-hosted runner는 14일 동안 job을 실행하지 않으면 자동 중단, ephemeral self-hosted runner는 하루지나면 삭제
+    steps: # job은 하나 이상의 steps로 구성 / 각 step은 직접 정의한 script(custom action)를 실행하거나 action(reusable extension)을 실행한다.
+      - name: Check out repository code # step의 name은 optional 하지만, log에 기록되므로 작성하는게 좋다.
+        uses: action/checkout@v4 # workflow가 repository에 접근하는 것을 허용하는 action / version을 지정하지 않으면 최신 버전이 자동으로 적용되어 workflow가 깨질 수 있다. / https://github.com/actions/checkout
+      - run: echo "$(cat hello_world.txt)"
